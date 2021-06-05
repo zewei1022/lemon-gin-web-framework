@@ -1,4 +1,4 @@
-module github.com/zewei1022/tanwange-go
+module github.com/zewei1022/lemon-gin-web-framework
 
 go 1.14
 
