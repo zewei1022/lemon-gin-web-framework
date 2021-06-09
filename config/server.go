@@ -1,10 +1,8 @@
 package config
 
-import "time"
-
 type Server struct {
-	Addr           string
-	ReadTimeout    time.Duration
-	WriteTimeout   time.Duration
-	MaxHeaderBytes int
+	Addr           int `yaml:"addr"`
+	ReadTimeout    int `mapstructure:"read-timeout" yaml:"read-timeout"`
+	WriteTimeout   int `mapstructure:"write-timeout" yaml:"write-timeout"`
+	MaxHeaderBytes int `mapstructure:"max-header-bytes" yaml:"max-header-bytes"`
 }
