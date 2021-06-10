@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"github.com/zewei1022/lemon-gin-web-framework/config"
 	"github.com/zewei1022/lemon-gin-web-framework/global"
+	"github.com/zewei1022/lemon-gin-web-framework/router"
 	"net/http"
 	"time"
 )
@@ -34,21 +34,18 @@ func InitConfigByViper() {
 }
 
 func RunServer()  {
-	r := gin.Default()
+	r := router.Init()
 
-	r.GET("/test", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "test",
-		})
-	})
-
+	address := fmt.Sprintf(":%d", global.LGWF_SERVER_CONFIG.Addr)
 	s := &http.Server{
-		Addr: fmt.Sprintf(":%d", global.LGWF_SERVER_CONFIG.Addr),
+		Addr: address,
 		Handler: r,
 		ReadTimeout: time.Duration(global.LGWF_SERVER_CONFIG.ReadTimeout) * time.Second,
 		WriteTimeout: time.Duration(global.LGWF_SERVER_CONFIG.WriteTimeout) * time.Second,
 		MaxHeaderBytes: global.LGWF_SERVER_CONFIG.MaxHeaderBytes,
 	}
+
+	fmt.Printf("Listening and serving HTTP on %s\n", address)
 
 	_ = s.ListenAndServe()
 }
