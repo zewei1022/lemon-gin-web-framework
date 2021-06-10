@@ -4,10 +4,12 @@ server:
   read-timeout: 10
   write-timeout: 10
   max-header-bytes: 1048576
-mysql:
-  path: 127.0.0.1:3306
+database:
+  type: mysql
+  hostname: 192.168.5.181
+  port: 3306
   config: charset=utf8mb4&parseTime=True&loc=Local
-  db-name: gva
+  db-name: library
   username: root
   password: tanwan888
   max-idle-conns: 0
@@ -16,5 +18,5 @@ mysql:
   log-zap: ""
 redis:
   db: 0
-  addr: 127.0.0.1:6379
+  addr: 192.168.5.181:6379
   password: ""
