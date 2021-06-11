@@ -15,3 +15,8 @@ func GetBookList(info request.PageInfo) (err error, list interface{}, total int6
 	err = db.Limit(limit).Offset(offset).Find(&bookList).Error
 	return err, bookList, total
 }
+
+func CreateBook(book request.CreateBookInfo) (err error) {
+	err = global.LGWF_DB.Create(&book).Error
+	return err
+}
