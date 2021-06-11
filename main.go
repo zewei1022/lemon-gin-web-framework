@@ -23,6 +23,7 @@ func InitDb()  {
 	case "mysql":
 		m := global.LGWF_DATABASE_CONFIG
 		dsn := m.Username + ":" + m.Password + "@tcp(" + m.Hostname + ")/" + m.DbName + "?" + m.Config
+		fmt.Printf("db dsn is : %s\n", dsn)
 		db, err := gorm.Open(mysql.New(mysql.Config{
 			DSN: dsn, // DSN data source name
 			DefaultStringSize: 256, // string 类型字段的默认长度
