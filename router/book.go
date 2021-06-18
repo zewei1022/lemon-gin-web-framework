@@ -8,6 +8,7 @@ import (
 func InitBookRouter(Router *gin.RouterGroup)  {
 	BookRouter := Router.Group("book")
 	{
+		BookRouter.GET("/findBook", v1.FindBook)
 		BookRouter.GET("/getBookList", v1.GetBookList)
 		BookRouter.POST("/createBook", v1.CreateBook)
 		BookRouter.POST("/updateBook", v1.UpdateBook)

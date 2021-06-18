@@ -8,11 +8,29 @@ import (
 	"github.com/zewei1022/lemon-gin-web-framework/service"
 )
 
+func FindBook(c *gin.Context) {
+	var idInfo request.IdInfo
+	_ = c.ShouldBind(&idInfo)
+
+	if book, err := service.FindBookById(idInfo); err != nil {
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.BookInfo{
+			Name:      book.Name,
+			Author:    book.Author,
+			Price:     book.Price,
+			Page:      book.Page,
+			Isbn:      book.Isbn,
+			Publisher: book.Publisher,
+		}, "获取成功", c)
+	}
+}
+
 func GetBookList(c *gin.Context) {
 	var pageInfo request.PageInfo
 	_ = c.ShouldBind(&pageInfo)
 
-	if err, list, total := service.GetBookList(pageInfo); err != nil {
+	if list, total, err := service.GetBookList(pageInfo); err != nil {
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(response.PageResult{
@@ -25,7 +43,7 @@ func GetBookList(c *gin.Context) {
 }
 
 func CreateBook(c *gin.Context) {
- 	var book request.CreateBookInfo
+	var book request.CreateBookInfo
 	_ = c.ShouldBind(&book)
 
 	validate := validator.New()

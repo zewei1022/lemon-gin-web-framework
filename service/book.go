@@ -6,14 +6,14 @@ import (
 	"github.com/zewei1022/lemon-gin-web-framework/model/request"
 )
 
-func GetBookList(info request.PageInfo) (err error, list interface{}, total int64) {
+func GetBookList(info request.PageInfo) (list interface{}, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	db := global.LGWF_DB.Model(&model.Book{})
 	var bookList []model.Book
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&bookList).Error
-	return err, bookList, total
+	return bookList, total, err
 }
 
 func CreateBook(bookInfo request.CreateBookInfo) (err error) {
@@ -27,4 +27,13 @@ func CreateBook(bookInfo request.CreateBookInfo) (err error) {
 	}
 	err = global.LGWF_DB.Create(&book).Error
 	return err
+}
+
+func FindBookById(idInfo request.IdInfo) (book model.Book, err error) {
+	var findBook model.Book
+	global.LGWF_DB.Model(&findBook).Where("id = ?", idInfo.ID).First(&findBook)
+	if book.ID > 0 {
+		return findBook, nil
+	}
+	return findBook, err
 }
