@@ -33,6 +33,7 @@ func CreateBook(c *gin.Context) {
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
 			response.FailWithMessage(err.Error(), c)
+			return
 		}
 	}
 

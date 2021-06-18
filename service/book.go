@@ -16,7 +16,15 @@ func GetBookList(info request.PageInfo) (err error, list interface{}, total int6
 	return err, bookList, total
 }
 
-func CreateBook(book request.CreateBookInfo) (err error) {
+func CreateBook(bookInfo request.CreateBookInfo) (err error) {
+	book := model.Book{
+		Name:      bookInfo.Name,
+		Author:    bookInfo.Author,
+		Price:     bookInfo.Price,
+		Page:      bookInfo.Page,
+		Isbn:      bookInfo.Isbn,
+		Publisher: bookInfo.Publisher,
+	}
 	err = global.LGWF_DB.Create(&book).Error
 	return err
 }
