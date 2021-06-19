@@ -6,7 +6,8 @@ import (
 )
 
 var (
-	LGWF_DB            *gorm.DB
-	LGWF_SERVER_CONFIG config.Server
+	LGWF_DB              *gorm.DB
+	LGWF_SERVER_CONFIG   config.Server
 	LGWF_DATABASE_CONFIG config.Database
+	LGWF_JWT_CONFIG      config.JWT
 )

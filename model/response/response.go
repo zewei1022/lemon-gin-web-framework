@@ -12,15 +12,18 @@ type Response struct {
 }
 
 const (
-	SUCCESS = 0
-	ERROR   = 1
+	SUCCESS      = 0
+	ERROR        = 1
+	TokenEmpty   = 110
+	TokenInvalid = 111
+	TokenExpired = 112
 )
 
-func JsonResponse(code int, data interface{}, msg string, c *gin.Context)  {
+func JsonResponse(code int, data interface{}, msg string, c *gin.Context) {
 	c.JSON(http.StatusOK, Response{code, data, msg})
 }
 
-func Ok(c *gin.Context)  {
+func Ok(c *gin.Context) {
 	JsonResponse(SUCCESS, map[string]interface{}{}, "操作成功", c)
 }
 
@@ -44,7 +47,6 @@ func FailWithMessage(message string, c *gin.Context) {
 	JsonResponse(ERROR, map[string]interface{}{}, message, c)
 }
 
-func FailWithDetailed(data interface{}, message string, c *gin.Context) {
-	JsonResponse(ERROR, data, message, c)
+func FailWithDetailed(code int, message string, c *gin.Context) {
+	JsonResponse(code, map[string]interface{}{}, message, c)
 }
-

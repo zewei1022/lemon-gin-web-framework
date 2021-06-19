@@ -20,3 +20,6 @@ redis:
   db: 0
   addr: 192.168.5.181:6379
   password: ""
+jwt:
+  signing-key: 649547eab943aabadf02db3dd9fa53db
+  expires-time: 86400

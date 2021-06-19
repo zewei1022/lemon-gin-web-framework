@@ -1,6 +1,7 @@
 package config
 
 type Config struct {
-	Server Server
+	Server   Server
 	Database Database
+	JWT      JWT
 }

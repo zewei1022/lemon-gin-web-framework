@@ -61,6 +61,7 @@ func InitConfig() {
 
 	global.LGWF_SERVER_CONFIG = config.Server
 	global.LGWF_DATABASE_CONFIG = config.Database
+	global.LGWF_JWT_CONFIG = config.JWT
 }
 
 func RunServer()  {
