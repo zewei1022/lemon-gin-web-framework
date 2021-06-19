@@ -5,7 +5,7 @@ type Book struct {
 	Name      string  `json:"name"`
 	Author    string  `json:"author"`
 	Price     float64 `json:"price"`
-	Page      int     `json:"page"`
+	Page      uint    `json:"page"`
 	Isbn      string  `json:"isbn"`
 	Publisher string  `json:"publisher"`
 }

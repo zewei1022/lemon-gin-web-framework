@@ -16,6 +16,7 @@ func FindBook(c *gin.Context) {
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(response.BookInfo{
+			ID:        book.ID,
 			Name:      book.Name,
 			Author:    book.Author,
 			Price:     book.Price,
@@ -63,9 +64,32 @@ func CreateBook(c *gin.Context) {
 }
 
 func UpdateBook(c *gin.Context) {
+	var book request.UpdateBookInfo
+	_ = c.ShouldBind(&book)
 
+	validate := validator.New()
+	err := validate.Struct(book)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			response.FailWithMessage(err.Error(), c)
+			return
+		}
+	}
+
+	if err := service.UpdateBook(book); err != nil {
+		response.FailWithMessage("修改失败", c)
+	} else {
+		response.OkWithMessage("修改成功", c)
+	}
 }
 
 func DeleteBook(c *gin.Context) {
+	var idInfo request.IdInfo
+	_ = c.ShouldBind(&idInfo)
 
+	if err := service.DeleteBook(idInfo.ID); err != nil {
+		response.FailWithMessage("删除失败", c)
+	} else {
+		response.OkWithMessage("删除成功", c)
+	}
 }
