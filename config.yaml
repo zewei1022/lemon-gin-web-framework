@@ -1,6 +1,6 @@
 server:
   env: public
-  addr: 8081
+  addr: 0.0.0.0:8081
   read-timeout: 10
   write-timeout: 10
   max-header-bytes: 1048576
@@ -23,3 +23,12 @@ redis:
 jwt:
   signing-key: 649547eab943aabadf02db3dd9fa53db
   expires-time: 86400
+zap:
+  level: info
+  encodelevel: CapitalLevelEncoder
+  director: /var/www/html/lemon-gin-web-framework/runtime/log
+  max-size: 1
+  max-backups: 5
+  max-age: 30
+  compress: false
+

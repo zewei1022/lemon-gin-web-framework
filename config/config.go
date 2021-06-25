@@ -4,4 +4,5 @@ type Config struct {
 	Server   Server
 	Database Database
 	JWT      JWT
+	Zap      Zap
 }

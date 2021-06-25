@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var jwtSecret = []byte(global.LGWF_JWT_CONFIG.Secret)
+var jwtSecret = []byte(global.LGWF_CONFIG.JWT.Secret)
 
 type Claims struct {
 	ID uint
@@ -14,7 +14,7 @@ type Claims struct {
 }
 
 func GenerateToken(id uint) (string, error) {
-	expireTime := time.Now().Unix() + global.LGWF_JWT_CONFIG.Ttl
+	expireTime := time.Now().Unix() + global.LGWF_CONFIG.JWT.Ttl
 
 	claims := Claims{
 		id,

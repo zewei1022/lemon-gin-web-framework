@@ -16,3 +16,6 @@
 
 # IDE directories
 .idea/
+
+# Runtime directories
+runtime

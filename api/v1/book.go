@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/zewei1022/lemon-gin-web-framework/global"
 	"github.com/zewei1022/lemon-gin-web-framework/model/request"
 	"github.com/zewei1022/lemon-gin-web-framework/model/response"
 	"github.com/zewei1022/lemon-gin-web-framework/service"
@@ -30,6 +31,8 @@ func FindBook(c *gin.Context) {
 func GetBookList(c *gin.Context) {
 	var pageInfo request.PageInfo
 	_ = c.ShouldBind(&pageInfo)
+
+	global.LGWF_LOGGER.Infof("GetBookList api, request info: %v", pageInfo)
 
 	if list, total, err := service.GetBookList(pageInfo); err != nil {
 		response.FailWithMessage("获取失败", c)
