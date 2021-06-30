@@ -70,6 +70,13 @@ func InitRedisPool() {
 						panic(err)
 					}
 				}
+
+				if global.LGWF_CONFIG.Redis.Db > 0 {
+					if _, err := conn.Do("SELECT", global.LGWF_CONFIG.Redis.Db); err != nil {
+						_ = conn.Close()
+						panic(err)
+					}
+				}
 				return conn, nil
 			},
 		}
