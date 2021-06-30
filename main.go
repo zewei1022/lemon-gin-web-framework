@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gomodule/redigo/redis"
 	"github.com/natefinch/lumberjack"
 	"github.com/spf13/viper"
 	"github.com/zewei1022/lemon-gin-web-framework/config"
@@ -20,6 +21,7 @@ func main() {
 	InitConfig()
 	InitLogger()
 	InitDb()
+	InitRedisPool()
 	RunServer()
 }
 
@@ -49,6 +51,31 @@ func InitDb() {
 	}
 }
 
+func InitRedisPool() {
+	if global.LGWF_CONFIG.Redis.Addr != "" {
+		global.LGWF_REDIS = &redis.Pool{
+			MaxIdle:     global.LGWF_CONFIG.Redis.MaxIdle,
+			MaxActive:   global.LGWF_CONFIG.Redis.MaxActive,
+			IdleTimeout: time.Duration(global.LGWF_CONFIG.Redis.IdleTimeout) * time.Second,
+			Wait:        global.LGWF_CONFIG.Redis.Wait,
+			Dial: func() (redis.Conn, error) {
+				conn, err := redis.Dial("tcp", global.LGWF_CONFIG.Redis.Addr)
+				if err != nil {
+					panic(err)
+				}
+
+				if global.LGWF_CONFIG.Redis.RequirePass {
+					if _, err := conn.Do("AUTH", global.LGWF_CONFIG.Redis.Password); err != nil {
+						_ = conn.Close()
+						panic(err)
+					}
+				}
+				return conn, nil
+			},
+		}
+	}
+}
+
 func InitConfig() {
 	viper.SetConfigType("yaml")
 	viper.SetConfigFile("config.yaml")
@@ -68,6 +95,7 @@ func InitConfig() {
 	global.LGWF_CONFIG.Database = customConfig.Database
 	global.LGWF_CONFIG.JWT = customConfig.JWT
 	global.LGWF_CONFIG.Zap = customConfig.Zap
+	global.LGWF_CONFIG.Redis = customConfig.Redis
 }
 
 func InitLogger() {
