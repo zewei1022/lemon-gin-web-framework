@@ -64,7 +64,7 @@ func InitRedisPool() {
 					panic(err)
 				}
 
-				if global.LGWF_CONFIG.Redis.RequirePass {
+				if global.LGWF_CONFIG.Redis.Password != "" {
 					if _, err := conn.Do("AUTH", global.LGWF_CONFIG.Redis.Password); err != nil {
 						_ = conn.Close()
 						panic(err)

@@ -19,7 +19,6 @@ database:
 redis:
   db: 0
   addr: 192.168.5.12:6379
-  require-pass: false
   password: ""
   max-idle: 10
   max-active: 10
