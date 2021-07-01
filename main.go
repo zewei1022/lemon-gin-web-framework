@@ -61,23 +61,27 @@ func InitRedisPool() {
 			Dial: func() (redis.Conn, error) {
 				conn, err := redis.Dial("tcp", global.LGWF_CONFIG.Redis.Addr)
 				if err != nil {
-					panic(err)
+					return nil, err
 				}
 
 				if global.LGWF_CONFIG.Redis.Password != "" {
 					if _, err := conn.Do("AUTH", global.LGWF_CONFIG.Redis.Password); err != nil {
 						_ = conn.Close()
-						panic(err)
+						return nil, err
 					}
 				}
 
 				if global.LGWF_CONFIG.Redis.Db > 0 {
 					if _, err := conn.Do("SELECT", global.LGWF_CONFIG.Redis.Db); err != nil {
 						_ = conn.Close()
-						panic(err)
+						return nil, err
 					}
 				}
 				return conn, nil
+			},
+			TestOnBorrow: func(c redis.Conn, t time.Time) error {
+				_, err := c.Do("PING")
+				return err
 			},
 		}
 	}
