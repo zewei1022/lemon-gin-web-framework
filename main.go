@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/gomodule/redigo/redis"
 	"github.com/natefinch/lumberjack"
 	"github.com/spf13/viper"
 	"github.com/zewei1022/lemon-gin-web-framework/config"
 	"github.com/zewei1022/lemon-gin-web-framework/global"
+	"github.com/zewei1022/lemon-gin-web-framework/lib/redis"
 	"github.com/zewei1022/lemon-gin-web-framework/router"
 	"github.com/zewei1022/lemon-gin-web-framework/utils"
 	"go.uber.org/zap"
@@ -21,7 +21,7 @@ func main() {
 	InitConfig()
 	InitLogger()
 	InitDb()
-	InitRedisPool()
+	redis.Initialize(global.LGWF_CONFIG.Redis)
 	RunServer()
 }
 
@@ -48,42 +48,6 @@ func InitDb() {
 		sqlDB.SetMaxOpenConns(m.MaxOpenConns)
 
 		global.LGWF_DB = db
-	}
-}
-
-func InitRedisPool() {
-	if global.LGWF_CONFIG.Redis.Addr != "" {
-		global.LGWF_REDIS = &redis.Pool{
-			MaxIdle:     global.LGWF_CONFIG.Redis.MaxIdle,
-			MaxActive:   global.LGWF_CONFIG.Redis.MaxActive,
-			IdleTimeout: time.Duration(global.LGWF_CONFIG.Redis.IdleTimeout) * time.Second,
-			Wait:        global.LGWF_CONFIG.Redis.Wait,
-			Dial: func() (redis.Conn, error) {
-				conn, err := redis.Dial("tcp", global.LGWF_CONFIG.Redis.Addr)
-				if err != nil {
-					return nil, err
-				}
-
-				if global.LGWF_CONFIG.Redis.Password != "" {
-					if _, err := conn.Do("AUTH", global.LGWF_CONFIG.Redis.Password); err != nil {
-						_ = conn.Close()
-						return nil, err
-					}
-				}
-
-				if global.LGWF_CONFIG.Redis.Db > 0 {
-					if _, err := conn.Do("SELECT", global.LGWF_CONFIG.Redis.Db); err != nil {
-						_ = conn.Close()
-						return nil, err
-					}
-				}
-				return conn, nil
-			},
-			TestOnBorrow: func(c redis.Conn, t time.Time) error {
-				_, err := c.Do("PING")
-				return err
-			},
-		}
 	}
 }
 

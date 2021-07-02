@@ -12,6 +12,7 @@ func Init() *gin.Engine {
 	apiV1Group := Router.Group("/api/v1/")
 	{
 		InitBookRouter(apiV1Group)
+		InitTestRouter(apiV1Group)
 	}
 
 	return Router
