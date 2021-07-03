@@ -24,4 +24,13 @@ func TestRedisLib(c *gin.Context)  {
 
 	delCount, _ := redis.Del("del1", "del2", "del3")
 	fmt.Println("delete count：", delCount)
+
+	renameRes, _ := redis.Rename("test1", "test2")
+	fmt.Println("rename result：", renameRes)
+
+	renameNxRes, _ := redis.RenameNx("test2", "test2")
+	fmt.Println("renamenx result：", renameNxRes)
+
+	keysResult, _ := redis.Keys("test*")
+	fmt.Printf("keys result: %v", keysResult)
 }

@@ -122,3 +122,39 @@ func Del(key ...string) (int, error) {
 
 	return delCount, nil
 }
+
+func Rename(key string, newKey string) (string, error) {
+	conn := pool.Get()
+	defer conn.Close()
+
+	s, err := redis.String(conn.Do("RENAME", key, newKey))
+	if err != nil {
+		return "", err
+	}
+
+	return s, nil
+}
+
+func RenameNx(key string, newKey string) (int, error) {
+	conn := pool.Get()
+	defer conn.Close()
+
+	i, err := redis.Int(conn.Do("RENAMENX", key, newKey))
+	if err != nil {
+		return 0, err
+	}
+
+	return i, nil
+}
+
+func Keys(pattern string) ([]string, error) {
+	conn := pool.Get()
+	defer conn.Close()
+
+	strings, err := redis.Strings(conn.Do("KEYS", pattern))
+	if err != nil {
+		return nil, err
+	}
+
+	return strings, nil
+}
