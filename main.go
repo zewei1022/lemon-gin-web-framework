@@ -21,7 +21,7 @@ func main() {
 	InitConfig()
 	InitLogger()
 	InitDb()
-	redis.Initialize(global.LGWF_CONFIG.Redis)
+	InitRedis()
 	RunServer()
 }
 
@@ -49,6 +49,10 @@ func InitDb() {
 
 		global.LGWF_DB = db
 	}
+}
+
+func InitRedis()  {
+	redis.Initialize(global.LGWF_CONFIG.Redis)
 }
 
 func InitConfig() {
