@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/zewei1022/lemon-gin-web-framework/config"
 	"github.com/zewei1022/lemon-gin-web-framework/global"
+	"github.com/zewei1022/lemon-gin-web-framework/lib/mongodb"
 	"github.com/zewei1022/lemon-gin-web-framework/lib/redis"
 	"github.com/zewei1022/lemon-gin-web-framework/router"
 	"github.com/zewei1022/lemon-gin-web-framework/utils"
@@ -22,6 +23,7 @@ func main() {
 	InitLogger()
 	InitDb()
 	InitRedis()
+	InitMongodb()
 	RunServer()
 }
 
@@ -55,6 +57,10 @@ func InitRedis()  {
 	redis.Initialize(global.LGWF_CONFIG.Redis)
 }
 
+func InitMongodb()  {
+	mongodb.Initialize(global.LGWF_CONFIG.Mongodb)
+}
+
 func InitConfig() {
 	viper.SetConfigType("yaml")
 	viper.SetConfigFile("config.yaml")
@@ -75,6 +81,7 @@ func InitConfig() {
 	global.LGWF_CONFIG.JWT = customConfig.JWT
 	global.LGWF_CONFIG.Zap = customConfig.Zap
 	global.LGWF_CONFIG.Redis = customConfig.Redis
+	global.LGWF_CONFIG.Mongodb = customConfig.Mongodb
 }
 
 func InitLogger() {

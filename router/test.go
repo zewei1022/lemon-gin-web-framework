@@ -9,5 +9,6 @@ func InitTestRouter(Router *gin.RouterGroup)  {
 	BookRouter := Router.Group("test")
 	{
 		BookRouter.GET("/redis", v1.TestRedisLib)
+		BookRouter.GET("/mongodb", v1.TestMongodbLib)
 	}
 }

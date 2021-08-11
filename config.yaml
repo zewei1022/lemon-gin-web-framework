@@ -6,7 +6,7 @@ server:
   max-header-bytes: 1048576
 database:
   type: mysql
-  hostname: 192.168.5.48
+  hostname: 192.168.5.22
   port: 3306
   config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: library
@@ -18,12 +18,14 @@ database:
   log-zap: ""
 redis:
   db: 0
-  addr: 192.168.5.48:6379
+  addr: 192.168.5.22:6379
   password: "123456"
   max-idle: 10
   max-active: 10
   idle-timeout: 6
   wait: true
+mongodb:
+  uri: "mongodb://192.168.5.22:27017"
 jwt:
   signing-key: 649547eab943aabadf02db3dd9fa53db
   expires-time: 86400
