@@ -26,6 +26,8 @@ redis:
   wait: true
 mongodb:
   uri: "mongodb://192.168.5.22:27017"
+  connect-timeout: 10
+  ping-timeout: 2
 jwt:
   signing-key: 649547eab943aabadf02db3dd9fa53db
   expires-time: 86400

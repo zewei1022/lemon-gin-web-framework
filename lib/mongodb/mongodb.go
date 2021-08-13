@@ -13,7 +13,7 @@ var Cli *mongo.Client
 
 func Initialize(config config.Mongodb) {
 	if config.Uri != "" {
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(config.ConnectTimeout) * time.Second)
 		defer cancel()
 
 		client, err := mongo.Connect(ctx, options.Client().ApplyURI(config.Uri))
@@ -23,7 +23,7 @@ func Initialize(config config.Mongodb) {
 
 		Cli = client
 
-		ctx, cancel = context.WithTimeout(context.Background(), 2*time.Second)
+		ctx, cancel = context.WithTimeout(context.Background(), time.Duration(config.PingTimeOut) * time.Second)
 		defer cancel()
 		err = Cli.Ping(ctx, readpref.Primary())
 		if err != nil {
